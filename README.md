@@ -56,6 +56,8 @@ THEN I am prompted to select an employee to update and their new role and this i
 
 ## Preview
 
+IN PROGRESS NOT UPDATED
+
 View live preview hosted on [Heroku](https://notexpress-pro.herokuapp.com/notes
 
 ![alt text](/media/readme-screenshot-1.png)
