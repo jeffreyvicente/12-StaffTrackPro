@@ -92,7 +92,74 @@ function addDepartment(){
 
 function updateEmployeeRole(){
     console.log("Update Employee Role Function is called!");
-    Init();
+
+    let employeeArray = [];
+    let roleArray = [];
+
+    //let roleArray = ["Role Name 1", "Role Name 2", "Role Name 3"];
+    //let employeeArray = ["Employee Name 1", "Employee Name 2", "Employee Name 3"];
+
+    
+    database.query('Select * from employees', function (err, data){
+        if(err) throw err;
+
+        for (let index = 0; index < data.length; index++){
+            employeeArray.push(data[index].first_name);
+            
+        }
+
+        database.query('Select * from roles', function(err, data){
+            if(err) throw err;
+    
+            for (let index = 0; index < data.length; index++){
+                roleArray.push(data[index].title);
+                //console.log(roleArray);
+            }
+
+            const updateEmployeeRollPrompt = [
+                {
+                    type: "list",
+                    message: "What is the name of the employee you want to update",
+                    choices: employeeArray,
+                    name: "employeeID"
+                    
+                },
+                {
+                    type: "list",
+                    message: "What is the new role of the employee",
+                    choices: roleArray,
+                    name: "roleID"
+                    
+                }
+                
+            ];
+
+            inquirer.prompt(updateEmployeeRollPrompt).then((answer) => {
+                let temp = employeeArray.indexOf(answer.employeeID);
+                let temp2 = roleArray.indexOf(answer.roleID);
+                database.query(`UPDATE employees SET role_id = ${temp2} WHERE id = ${temp} + 1`, function(err, data){
+                    if(err) throw err;
+
+                    console.log("Employee updated");
+                    console.log(`Employee ${answer.employeeID} now has the role of ${answer.roleID}`);
+                });
+
+                setTimeout(Init,2000);
+            });
+
+
+    
+        });
+       
+    });
+
+   
+    
+    
+
+
+    
+    
 }
 
 
@@ -101,7 +168,7 @@ function addRole(){
 
     console.log("Add Role Function is called!");
 
-    //let departmentName = ["Dep Name 1", "Dep Name 2", "Dep Name 3"];
+    //let departmentName = 
 
     let departmentName = [];
 
@@ -197,10 +264,5 @@ const addEmployeePrompt = [
     }
 ]
 
-const updateEmployeeRollPrompt = [
-    {
-
-    }
-]
 
 Init();
