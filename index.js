@@ -26,28 +26,82 @@ function Init(){
     inquirer.prompt(startPrompt).then((answer) => {
         console.log(answer.startInput);
 
+        switch(answer.startInput){
+            case "View Employees":
+                viewEmployees();
+                break;
+            case "Update Employee Role":
+                updateEmployeeRole();
+                break;
+            case "View All Roles":
+                viewAllRoles();
+                break;
+            case "Add Role":
+                addRole();
+                break;
+            case "Add Department":
+                addDepartment();
+                break;
+            case "View Departments":
+                viewDepartments();
+                break;
+            default:
+                console.log("Invalid selection!");
+                Init();
+                return;
+        }
+
 
     });
 
 }
 
 function viewEmployees(){
-
+    console.log("View Employees Function is called!");
+    viewTable("employees");
 }
 
-function updateEmployeeRoll(){
-
+function viewDepartments(){
+    console.log("View Department Function is called");
+    viewTable("departments");
 }
 
 function viewAllRoles(){
-
-}
-
-function addRole(){
-
+    console.log("Vew All Roles Function is called!");
+    viewTable("roles");
+    
 }
 
 function addDepartment(){
+    console.log("Add Department Function is called!");
+    Init();
+
+}
+
+
+function updateEmployeeRole(){
+    console.log("Update Employee Role Function is called!");
+    Init();
+}
+
+
+
+function addRole(){
+
+    console.log("Add Roll Function is called!");
+    Init();
+}
+
+
+function viewTable(selectedTable){
+    database.query(`SELECT * FROM ${selectedTable}`, function(err, data){
+        if (err) throw err;
+        console.table(data);
+        //console.log(data);
+        Init();
+        
+
+    });
 
 }
 
@@ -55,7 +109,7 @@ const startPrompt = [
     {
         type:"list",
         message:"What would you like to do?",
-        choices:["View Employees","Update Employee Role", "View All Roles", "Add Role", "Add Department"],
+        choices:["View Employees","View Departments", "View All Roles", "Add Role", "Add Department", "Update Employee Role",],
         name: "startInput"
     }
 
