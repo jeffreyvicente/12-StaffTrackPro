@@ -74,7 +74,18 @@ function viewAllRoles(){
 
 function addDepartment(){
     console.log("Add Department Function is called!");
-    Init();
+
+    inquirer.prompt(addDepartmentPrompt).then((answer) => {
+        database.query(`INSERT INTO departments (name) VALUES ('${answer.departmentName}')`, function(err, data) {
+            if (err) throw err;
+            console.log(`The department ${answer.departmentName} has been added to the department table!`)
+
+            //nodconsole.table(data);
+            Init();
+
+        });
+
+    });
 
 }
 
@@ -88,7 +99,7 @@ function updateEmployeeRole(){
 
 function addRole(){
 
-    console.log("Add Roll Function is called!");
+    console.log("Add Role Function is called!");
     Init();
 }
 
@@ -115,17 +126,22 @@ const startPrompt = [
 
 ]
 
+const addDepartmentPrompt = [
+    {
+        type: "input",
+        message: "What is the name of the new department?",
+        name: "departmentName"
+
+    }
+]
+
 const addRolePrompt = [
     {
 
     }
 ]
 
-const addDepartmentPrompt = [
-    {
 
-    }
-]
 
 const addEmployeePrompt = [
     {
