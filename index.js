@@ -39,6 +39,9 @@ function Init(){
             case "Add Role":
                 addRole();
                 break;
+            case "Add Employee":
+                addEmployee();
+                break;   
             case "Add Department":
                 addDepartment();
                 break;
@@ -72,6 +75,92 @@ function viewAllRoles(){
     
 }
 
+function addEmployee(){
+
+    let roleArray = [];
+    let employeeArray = [];
+
+    //let roleArray = ["Role Name 1", "Role Name 2", "Role Name 3"];
+    //let employeeArray = ["Employee Name 1", "Employee Name 2", "Employee Name 3"];
+
+
+    const addEmployeePrompt = [
+        {
+            type: "input",
+            message: "What is the employee's first name?",
+            name: "firstName"
+        },
+        {
+            type: "input",
+            message: "What is the employee's last name?",
+            name: "lastName"
+        },
+        {
+            type: "list",
+            message: "What is the employee's role?",
+            choices: roleArray,
+            name: "employeeRole"
+        },
+        {
+            type: "list",
+            message: "Who is the employee's manager?",
+            choices: employeeArray,
+            name: "employeeArray"
+        }
+
+    ];
+
+    database.query(`Select * from roles`, function(err, data){
+        if(err) throw err;
+
+        for(let index = 0; index < data.length; index++){
+            roleArray.push(data[index].title);
+        }
+    });
+
+    database.query(`Select * from employees`, function(err, data){
+        if(err) throw err;
+        for(let index = 0; index < data.length; index++){
+            employeeArray.push(data[index].first_name);
+        }
+
+        employeeArray.push("No Manager");
+
+        //console.log(employeeArray);
+    });
+
+    
+
+    inquirer.prompt(addEmployeePrompt).then((answer) => {
+
+        
+        let query;
+        let temp = employeeArray.indexOf(answer.employeeArray);
+        let temp2 = roleArray.indexOf(answer.employeeRole);
+        
+        //INSERT INTO employees (first_name, last_name, role_id) VALUES ('Mark', 'Nguyen', 1);
+        
+        if(answer.employeeArray == "No Manager"){
+            console.log("No Manager has been selected!");
+            query = `INSERT INTO employees (first_name, last_name, role_id) VALUES ('${answer.firstName}', '${answer.lastName}', ${temp2})`;
+        }else{
+            query = `INSERT INTO employees (first_name, last_name, manager_id, role_id) VALUES ('${answer.firstName}', '${answer.lastName}', ${temp}, ${temp2})`;
+        }
+       
+        console.log(query);
+
+        database.query(query, function(err, data){
+            if(err) throw err;
+
+            console.log("employee has been added.")
+        });
+
+
+        setTimeout(Init,2000);
+    });
+
+}
+
 function addDepartment(){
     console.log("Add Department Function is called!");
 
@@ -88,7 +177,6 @@ function addDepartment(){
     });
 
 }
-
 
 function updateEmployeeRole(){
     console.log("Update Employee Role Function is called!");
@@ -146,20 +234,8 @@ function updateEmployeeRole(){
 
                 setTimeout(Init,2000);
             });
-
-
-    
         });
-       
-    });
-
-   
-    
-    
-
-
-    
-    
+    });    
 }
 
 
@@ -239,7 +315,7 @@ const startPrompt = [
     {
         type:"list",
         message:"What would you like to do?",
-        choices:["View Employees","View Departments", "View All Roles", "Add Role", "Add Department", "Update Employee Role",],
+        choices:["View Employees","View Departments", "View All Roles","Add Employee", "Add Role", "Add Department", "Update Employee Role",],
         name: "startInput"
     }
 
@@ -258,11 +334,7 @@ const addDepartmentPrompt = [
 
 
 
-const addEmployeePrompt = [
-    {
 
-    }
-]
 
 
 Init();
