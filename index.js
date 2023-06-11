@@ -100,7 +100,59 @@ function updateEmployeeRole(){
 function addRole(){
 
     console.log("Add Role Function is called!");
-    Init();
+
+    //let departmentName = ["Dep Name 1", "Dep Name 2", "Dep Name 3"];
+
+    let departmentName = [];
+
+    const addRolePrompt = [
+        {
+            type: "input",
+            message: "What is the name of the new role?",
+            name: "roleName"
+        },
+        {
+            type: "input",
+            message: "What is the salary of the new role?",
+            name: "roleSalary"
+        },
+        {
+            type:"list",
+            message:"What would you like to do?",
+            choices:departmentName,
+            name: "roleDepartment"
+        }
+    ];
+
+    database.query(`Select * from departments`, function (err, data){
+        if (err) throw err;
+
+        for (let index = 0; index < data.length; index++){
+            departmentName.push(data[index].name);
+
+        }
+        
+    });
+
+    inquirer.prompt(addRolePrompt).then((answer) => {
+        let temp = departmentName.indexOf(answer.roleDepartment);
+        
+        database.query(`INSERT INTO roles (title, department, salary) VALUES ('${answer.roleName}', '${temp}', '${answer.roleSalary}')`, function(err, data) {
+            if(err) throw err;
+
+            console.log("-----------------------------------------------------------------------")
+            console.log("The follow role was added to the role table.");
+            console.log("Title: " + answer.roleName);
+            console.log("Department: " + answer.roleDepartment);
+            console.log("Salary: " + answer.roleSalary);
+            console.log("-----------------------------------------------------------------------")
+        });
+
+
+        setTimeout(Init,2000);
+    });
+
+
 }
 
 
@@ -135,11 +187,7 @@ const addDepartmentPrompt = [
     }
 ]
 
-const addRolePrompt = [
-    {
 
-    }
-]
 
 
 
