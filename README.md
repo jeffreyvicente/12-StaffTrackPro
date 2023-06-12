@@ -58,11 +58,15 @@ THEN I am prompted to select an employee to update and their new role and this i
 
 IN PROGRESS NOT UPDATED
 
-View live preview hosted on [Heroku](https://notexpress-pro.herokuapp.com/notes
+View video demo [Link](https://notexpress-pro.herokuapp.com/notes)
 
-![alt text](/media/readme-screenshot-1.png)
+![alt text](/media/Screenshot-ViewDepartments.png)
 
-![alt text](/media/readme-screenshot-2.png)
+![alt text](/media/Screenshot-ViewEmployees.png)
+
+![alt text](/media/Screenshot-ViewRoles.png)
+
+![alt text](/media/Screenshot-AddEmployee.png)
 
 
 
