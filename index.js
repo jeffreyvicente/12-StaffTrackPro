@@ -23,7 +23,7 @@ database.connect(function (error){
         return;
     }
     // Logs a success message to the console if connection is good. 
-    console.log("Connection successful. Application in running");
+    //console.log("Connection successful. Application in running");
 });
 
 function Init(){
@@ -428,6 +428,15 @@ const startPrompt = [
         message:"What would you like to do?",
         choices:["View Employees","View Departments", "View All Roles","Add Employee", "Add Role", "Add Department", "Update Employee Role","Exit"],
         name: "startInput"
+    }
+];
+
+const addDepartmentPrompt = [
+    {
+        type: "input",
+        message: "What is the name of the new department?",
+        name: "departmentName"
+
     }
 ];
 
