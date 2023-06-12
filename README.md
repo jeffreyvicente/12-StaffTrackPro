@@ -57,7 +57,7 @@ THEN I am prompted to select an employee to update and their new role and this i
 ## Preview
 
 
-View video demo [Link](https://drive.google.com/drive/folders/1W1IToDDMLA7tm25PEkHwP1SQvIpO_yQf?usp=sharing)
+View video demo [Link](https://drive.google.com/file/d/1QbP7w8DfAgD_nBL9SBL8VQdpqhdLlEXJ/view?usp=drive_link)
 
 ![alt text](/media/Screenshot-ViewDepartments.png)
 
