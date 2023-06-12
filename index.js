@@ -141,7 +141,7 @@ function addEmployee(){
         //INSERT INTO employees (first_name, last_name, role_id) VALUES ('Mark', 'Nguyen', 1);
         
         if(answer.employeeArray == "No Manager"){
-            console.log("No Manager has been selected!");
+            //console.log("No Manager has been selected!");
             query = `INSERT INTO employees (first_name, last_name, role_id) VALUES ('${answer.firstName}', '${answer.lastName}', ${temp2})`;
         }else{
             query = `INSERT INTO employees (first_name, last_name, manager_id, role_id) VALUES ('${answer.firstName}', '${answer.lastName}', ${temp}, ${temp2})`;
@@ -152,11 +152,19 @@ function addEmployee(){
         database.query(query, function(err, data){
             if(err) throw err;
 
-            console.log("employee has been added.")
+            console.log("-----------------------------------------------------------------------");
+            console.log("The following employee Has Been added")
+            console.log("--------DETAILS--------")
+            console.log(`First Name: ${answer.firstName}`);
+            console.log(`Last Name: ${answer.lastName}`);
+            console.log(`Role: ${answer.employeeRole}`);
+            console.log(`Manager: ${answer.employeeArray}`);
+            console.log("-----------------------------------------------------------------------")
+
         });
 
 
-        setTimeout(Init,2000);
+        setTimeout(Init,1500);
     });
 
 }
@@ -167,7 +175,10 @@ function addDepartment(){
     inquirer.prompt(addDepartmentPrompt).then((answer) => {
         database.query(`INSERT INTO departments (name) VALUES ('${answer.departmentName}')`, function(err, data) {
             if (err) throw err;
+
+            console.log("-----------------------------------------------------------------------");
             console.log(`The department ${answer.departmentName} has been added to the department table!`)
+            console.log("-----------------------------------------------------------------------");
 
             //nodconsole.table(data);
             Init();
@@ -228,11 +239,14 @@ function updateEmployeeRole(){
                 database.query(`UPDATE employees SET role_id = ${temp2} WHERE id = ${temp} + 1`, function(err, data){
                     if(err) throw err;
 
+                    console.log("-----------------------------------------------------------------------");
                     console.log("Employee updated");
                     console.log(`Employee ${answer.employeeID} now has the role of ${answer.roleID}`);
+                    console.log("-----------------------------------------------------------------------");
+
                 });
 
-                setTimeout(Init,2000);
+                setTimeout(Init,1500);
             });
         });
     });    
@@ -329,12 +343,6 @@ const addDepartmentPrompt = [
 
     }
 ]
-
-
-
-
-
-
 
 
 Init();
