@@ -48,6 +48,9 @@ function Init(){
             case "View Departments":
                 viewDepartments();
                 break;
+            case "Exit":
+                database.end();
+                break;
             default:
                 console.log("Invalid selection!");
                 Init();
@@ -61,7 +64,31 @@ function Init(){
 
 function viewEmployees(){
     console.log("View Employees Function is called!");
-    viewTable("employees");
+    //viewTable("employees");
+
+    // including employee ids, first names, last names, job titles, departments, salaries, and managers that the employees report to
+
+    const query = `SELECT
+    employees.id AS employee_id,
+    employees.first_name,
+    employees.last_name,
+    roles.title AS job_title,
+    departments.name AS department,
+    roles.salary,
+    managers.first_name AS manager_name
+    
+    FROM employees
+    INNER JOIN roles ON employees.role_id = roles.id
+    INNER JOIN departments ON roles.department = departments.id
+    LEFT JOIN employees AS managers ON employees.manager_id = managers.id;`
+
+    database.query(query, function(err, data){
+        if(err) throw err;
+
+
+        console.table(data);
+        Init();
+    });
 }
 
 function viewDepartments(){
@@ -135,8 +162,8 @@ function addEmployee(){
 
         
         let query;
-        let temp = employeeArray.indexOf(answer.employeeArray);
-        let temp2 = roleArray.indexOf(answer.employeeRole);
+        let temp = employeeArray.indexOf(answer.employeeArray) + 1;
+        let temp2 = roleArray.indexOf(answer.employeeRole) + 1;
         
         //INSERT INTO employees (first_name, last_name, role_id) VALUES ('Mark', 'Nguyen', 1);
         
@@ -234,9 +261,11 @@ function updateEmployeeRole(){
             ];
 
             inquirer.prompt(updateEmployeeRollPrompt).then((answer) => {
-                let temp = employeeArray.indexOf(answer.employeeID);
-                let temp2 = roleArray.indexOf(answer.roleID);
-                database.query(`UPDATE employees SET role_id = ${temp2} WHERE id = ${temp} + 1`, function(err, data){
+                let temp = employeeArray.indexOf(answer.employeeID) + 1;
+                console.log(temp);
+                let temp2 = roleArray.indexOf(answer.roleID) + 1;
+                console(temp2);
+                database.query(`UPDATE employees SET role_id = ${temp2} WHERE id = ${temp} `, function(err, data){
                     if(err) throw err;
 
                     console.log("-----------------------------------------------------------------------");
@@ -292,7 +321,7 @@ function addRole(){
     });
 
     inquirer.prompt(addRolePrompt).then((answer) => {
-        let temp = departmentName.indexOf(answer.roleDepartment);
+        let temp = departmentName.indexOf(answer.roleDepartment) + 1;
         
         database.query(`INSERT INTO roles (title, department, salary) VALUES ('${answer.roleName}', '${temp}', '${answer.roleSalary}')`, function(err, data) {
             if(err) throw err;
@@ -329,19 +358,10 @@ const startPrompt = [
     {
         type:"list",
         message:"What would you like to do?",
-        choices:["View Employees","View Departments", "View All Roles","Add Employee", "Add Role", "Add Department", "Update Employee Role",],
+        choices:["View Employees","View Departments", "View All Roles","Add Employee", "Add Role", "Add Department", "Update Employee Role","Exit"],
         name: "startInput"
     }
 
-]
-
-const addDepartmentPrompt = [
-    {
-        type: "input",
-        message: "What is the name of the new department?",
-        name: "departmentName"
-
-    }
 ]
 
 
